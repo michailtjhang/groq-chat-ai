@@ -5,7 +5,7 @@ import { Send, Bot, User, Settings, Plus, MessageSquare, Trash2, Edit2, Check, X
 
 interface Message {
   id: string;
-  role: 'user' | 'assistant';
+  role: 'user' | 'assistant' | 'system';
   content: string;
   timestamp: Date;
 }
@@ -178,59 +178,17 @@ export default function ChatInterface() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to get response');
+        // Coba ambil pesan error dari body jika ada
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to get response');
       }
 
       const data = await response.json();
-      // console.log('Raw API Response:', data);
-
-      let assistantContent = '';
-
-      try {
-        // Check if data has a message property that contains JSON string
-        if (data.message && typeof data.message === 'string') {
-          try {
-            // Parse the JSON string
-            const parsedMessage = JSON.parse(data.message);
-            // console.log('Parsed message:', parsedMessage);
-
-            // Check for OpenAI format response
-            if (parsedMessage.choices && Array.isArray(parsedMessage.choices) && parsedMessage.choices.length > 0) {
-              const choice = parsedMessage.choices[0];
-              if (choice.message && choice.message.content) {
-                assistantContent = choice.message.content;
-              }
-            }
-            // Fallback to direct content property
-            else if (parsedMessage.content) {
-              assistantContent = parsedMessage.content;
-            }
-          } catch (parseError) {
-            console.error('Error parsing message JSON:', parseError);
-            // If it's not JSON, treat as plain text
-            assistantContent = data.message;
-          }
-        }
-        // Direct content extraction
-        else if (data.content) {
-          assistantContent = data.content;
-        }
-        // Fallback to the original data if it's a string
-        else if (typeof data === 'string') {
-          assistantContent = data;
-        }
-
-        // Final fallback
-        if (!assistantContent) {
-          assistantContent = 'No response received';
-        }
-
-        // console.log('Final assistant content:', assistantContent);
-
-      } catch (error) {
-        console.error('Error parsing response:', error);
-        assistantContent = 'Sorry, there was an error processing the response.';
-      }
+      
+      // 🚨 PERUBAHAN UTAMA DI SINI
+      // Kita asumsikan API route kita sekarang mengembalikan { message: "AI response text" }
+      const assistantContent = data.message || 'Sorry, there was an error processing the response.';
+      // 🚨 PERUBAHAN UTAMA SELESAI DI SINI
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -257,7 +215,7 @@ export default function ChatInterface() {
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: 'Sorry, something went wrong. Please try again.',
+        content: `Sorry, something went wrong. ${(error as Error).message}. Please try again.`,
         timestamp: new Date(),
       };
       setMessages(prev => [...prev, errorMessage]);
@@ -403,10 +361,10 @@ export default function ChatInterface() {
                 </div>
                 <div>
                   <h1 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    IBM Granite AI
+                    Groq OpenAI/GPT OSS Chat 
                   </h1>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Powered by Replicate
+                    Powered by Groq ⚡
                   </p>
                 </div>
               </div>
@@ -429,7 +387,7 @@ export default function ChatInterface() {
                   <Bot className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                 </div>
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                  Welcome to IBM Granite AI
+                  Welcome to Groq OpenAI/GPT OSS Chat
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400 mb-6">
                   Start a conversation with our AI assistant. Ask questions, get help with tasks, or just chat!

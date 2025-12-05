@@ -4,8 +4,8 @@ import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'IBM Granite Chat AI',
-  description: 'Chat with IBM Granite AI model powered by Replicate',
+  title: 'Groq Chat AI',
+  description: 'Chat with Groq OpenAI/GPT OSS model powered by Groq API',
 }
 
 export default function RootLayout({
