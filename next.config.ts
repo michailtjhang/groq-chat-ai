@@ -1,11 +1,15 @@
-import type { NextConfig } from "next";
+import { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
-    ignoreDuringBuilds: true,
-  },
+  // Hapus properti 'eslint' yang menyebabkan error
+  
+  // Script dev/build Anda masih menggunakan --turbopack, jadi ini aman
+  // Ini adalah konfigurasi Next.js yang standar:
+  // experimental: {
+  //   turbo: {
+  //     // Konfigurasi Turbopack jika ada
+  //   }
+  // }
 };
 
 export default nextConfig;
