@@ -14,6 +14,14 @@ export async function POST(request: NextRequest) {
   try {
     const { messages } = await request.json();
 
+    const systemMessage = {
+      role: 'system',
+      content: 'You must respond to all user queries strictly in Bahasa Indonesia.', // GANTI BAHASA DI BARIS INI
+    };
+
+    // Gabungkan System Message dengan riwayat pesan user/assistant
+    const fullMessages = [systemMessage, ...messages];
+
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return NextResponse.json(
         { error: 'Messages array is required and must not be empty' },
@@ -27,7 +35,7 @@ export async function POST(request: NextRequest) {
       model: 'openai/gpt-oss-120b', 
       
       // Kirim seluruh riwayat pesan untuk konteks chat
-      messages: messages.map((msg: ChatMessage) => ({
+      messages: fullMessages.map((msg: ChatMessage) => ({
         role: msg.role,
         content: msg.content
       })),
