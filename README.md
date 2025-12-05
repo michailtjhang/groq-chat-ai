@@ -2,24 +2,25 @@
   <img src="app/favicon.ico" alt="Logo" width="200" />
 </p>
 
-# IBM Granite Chat AI
+# Super-Fast Groq AI Chat
 
-Aplikasi chat AI modern yang menggunakan model IBM Granite 3.3-8b-instruct melalui Replicate API, dibangun dengan Next.js 15 dan tampilan mirip Chat Ai pada umumnya.
+Aplikasi chat AI modern yang menggunakan model **GPT-OSS 120B** (atau Llama 3.1) yang super cepat melalui **Groq API**, dibangun dengan **Next.js 16** dan tampilan yang familiar seperti aplikasi Chat AI pada umumnya.
 
 ## Teknologi
 
-- **Next.js 15** - React framework dengan App Router
+- **Next.js 16** - React framework dengan App Router (Diperbarui ke versi terbaru untuk keamanan)
 - **TypeScript** - Menjamin type safety
 - **Tailwind CSS** - Utility-first CSS framework
-- **Replicate API** - Model hosting untuk IBM Granite
+- **Groq API** - Platform inferensi super cepat untuk model *open-source*
+- **GPT-OSS 120B / Llama 3.1** - Model Bahasa Besar yang digunakan
 - **Lucide React** - Ikon modern dan ringan
 
 ## Fitur
 
-- 🎨 UI modern mirip Chat Ai pada umumnya dengan dark theme
+- 🎨 UI modern mirip Chat AI pada umumnya dengan dark theme
 - 💬 Multiple chat conversations dengan sidebar
-- 🤖 Integrasi dengan IBM Granite AI model via Replicate
-- ⚡ Real-time typing indicators
+- 🤖 Integrasi dengan model AI melalui **Groq API** (GPT-OSS 120B)
+- ⚡ **Kecepatan Respons Ekstrem** berkat Groq LPU
 - 📱 Responsive design untuk mobile dan desktop
 - ✨ Smooth animations dan transitions
 - 🔄 Auto-scroll ke pesan terbaru
@@ -30,8 +31,8 @@ Aplikasi chat AI modern yang menggunakan model IBM Granite 3.3-8b-instruct melal
 ### 1. Clone/Download Files
 
 ```bash
-git clone https://github.com/username/granite-chat-ai.git
-cd granite-chat-ai
+git clone https://github.com/username/groq-chat-ai.git
+cd groq-chat-ai
 ```
 
 ### 2. Install Dependencies
@@ -47,10 +48,10 @@ yarn install
 Buat file `.env.local` di root project:
 
 ```bash
-REPLICATE_API_TOKEN=Token API REPLICATE
+GROQ_API_KEY="gsk_token_api_groq_anda"
 ```
 
-**⚠️ Penting:** Pastikan mengganti dengan token Replicate yang valid.
+**⚠️ Penting:** Pastikan mengganti dengan token API Groq yang valid. Token Replicate yang lama tidak akan bekerja.
 
 ### 4. Run Development Server
 
@@ -64,16 +65,13 @@ Buka [http://localhost:3000](http://localhost:3000) di browser.
 
 ## 🧠 AI Support Explanation
 
-Aplikasi ini menggunakan **IBM Granite 3.3-8b-instruct** melalui **Replicate API** sebagai otak percakapan, untuk menjawab pertanyaan dan merespons input pengguna secara interaktif.
+Aplikasi ini menggunakan **Groq API** untuk menyediakan respons AI yang sangat cepat (low-latency). Model yang digunakan saat ini adalah **GPT-OSS 120B** (atau model Llama 3.1, tergantung konfigurasi `api/chat/route.ts`).
 
-* Model Granite dipanggil dari endpoint `app/api/chat/route.ts`.
+* Model dipanggil dari endpoint `app/api/chat/route.ts`.
 * Parameter default yang digunakan:
-
   * `max_tokens`: 512
   * `temperature`: 0.6
-  * `top_p`: 0.9
-  * `top_k`: 50
-* Pengguna dapat menyesuaikan parameter ini sesuai kebutuhan untuk mengatur gaya respons AI.
+* **System Message**: Model dikontrol menggunakan system message (didefinisikan di `api/chat/route.ts`) untuk mengatur perilaku, kepribadian, dan **bahasa** yang digunakan AI (misalnya, Bahasa Indonesia atau Inggris).
 
 ## 📜 License
 
